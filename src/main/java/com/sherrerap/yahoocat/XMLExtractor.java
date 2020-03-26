@@ -12,7 +12,6 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -55,23 +54,62 @@ public class XMLExtractor {
 				while (iterator.hasNext()) {
 					Attribute attribute = iterator.next();
 					QName name = attribute.getName();
-					if ("id".equalsIgnoreCase(name.getLocalPart())) {
-						document.setId(Integer.valueOf(attribute.getValue()));
+					if ("uri".equalsIgnoreCase(name.getLocalPart())) {
+						document.setUri(attribute.getValue());
 					}
-				}
+					if ("subject".equalsIgnoreCase(name.getLocalPart())) {
+						document.setSubject(attribute.getValue());
+					}
+					if ("content".equalsIgnoreCase(name.getLocalPart())) {
+						document.setContent(attribute.getValue());
+					}
+					if ("bestanswer".equalsIgnoreCase(name.getLocalPart())) {
+						document.setBestanswer(attribute.getValue());
+					}
+					if ("nbestanswers".equalsIgnoreCase(name.getLocalPart())) {
+						List<String> bestAnswers = new ArrayList<String>();
+						if ("answer_item".equals(startElement.getName().getLocalPart())) {
+							bestAnswers.add(attribute.getValue());
+						}
+						document.getNbestanswers().addAll(bestAnswers);
+					}
+					if ("cat".equalsIgnoreCase(name.getLocalPart())) {
+						document.setCat(attribute.getValue());
+					}
+					if ("maincat".equalsIgnoreCase(name.getLocalPart())) {
+						document.setMaincat(attribute.getValue());
+					}
+					if ("subcat".equalsIgnoreCase(name.getLocalPart())) {
+						document.setSubcat(attribute.getValue());
+					}
+					if ("date".equalsIgnoreCase(name.getLocalPart())) {
+						document.setDate(attribute.getValue());
+					}
+					if ("res_date".equalsIgnoreCase(name.getLocalPart())) {
+						document.setRes_date(attribute.getValue());
+					}
+					if ("vot_date".equalsIgnoreCase(name.getLocalPart())) {
+						document.setVot_date(attribute.getValue());
+					}
+					if ("lastanswerts".equalsIgnoreCase(name.getLocalPart())) {
+						document.setLastanswerts(attribute.getValue());
+					}
+					if ("qlang".equalsIgnoreCase(name.getLocalPart())) {
+						document.setQlang(attribute.getValue());
+					}
+					if ("qintl".equalsIgnoreCase(name.getLocalPart())) {
+						document.setQintl(attribute.getValue());
+					}
+					if ("language".equalsIgnoreCase(name.getLocalPart())) {
+						document.setLanguage(attribute.getValue());
+					}
+					if ("id".equalsIgnoreCase(name.getLocalPart())) {
+						document.setId(attribute.getValue());
+					}
+					if ("best_id".equalsIgnoreCase(name.getLocalPart())) {
+						document.setBest_id(attribute.getValue());
+					}
 
-				// Now everytime content tags are found;
-				// Move the iterator and read data
-				switch (startElement.getName().getLocalPart()) {
-				case "name":
-					Characters nameDataEvent = (Characters) eventReader.nextEvent();
-					document.setName(nameDataEvent.getData());
-					break;
-
-				case "title":
-					Characters titleDataEvent = (Characters) eventReader.nextEvent();
-					document.setTitle(titleDataEvent.getData());
-					break;
 				}
 			}
 

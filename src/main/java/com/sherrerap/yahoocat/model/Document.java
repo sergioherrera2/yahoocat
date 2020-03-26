@@ -1,10 +1,10 @@
 package com.sherrerap.yahoocat.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,11 +20,12 @@ public class Document {
 	private String subcat;
 	private String date;
 	private String res_date;
+	private String vot_date;
 	private String lastanswerts;
 	private String qlang;
 	private String qintl;
 	private String language;
-	private int id;
+	private String id;
 	private String best_id;
 
 	public String getUri() {
@@ -103,7 +104,15 @@ public class Document {
 		return res_date;
 	}
 
-	public void setRes_date(String res_date) {
+	public void setRes_date(String vot_date) {
+		this.vot_date = vot_date;
+	}
+
+	public String getVot_date() {
+		return vot_date;
+	}
+
+	public void setVot_date(String res_date) {
 		this.res_date = res_date;
 	}
 
@@ -139,11 +148,11 @@ public class Document {
 		this.language = language;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
