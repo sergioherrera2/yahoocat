@@ -1,130 +1,174 @@
 package com.sherrerap.yahoocat;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
 import com.sherrerap.yahoocat.model.Document;
 
 public class XMLExtractor {
-	public static void main(String[] args) throws FileNotFoundException, XMLStreamException {
-		File file = new File("documents.xml");
 
-		// Instance of the class which helps on reading tags
-		XMLInputFactory factory = XMLInputFactory.newInstance();
+	private static final String TAG_DOCUMENT = "document";
+	private static final String TAG_URI = "uri";
+	private static final String TAG_SUBJECT = "subject";
+	private static final String TAG_CONTENT = "content";
+	private static final String TAG_BESTANSWER = "bestanswer";
+	private static final String TAG_NBESTANSWERS = "nbestanswers";
+	private static final String TAG_ANSWER_ITEM = "answer_item";
+	private static final String TAG_CAT = "cat";
+	private static final String TAG_MAINCAT = "maincat";
+	private static final String TAG_SUBCAT = "subcat";
+	private static final String TAG_DATE = "date";
+	private static final String TAG_RES_DATE = "res_date";
+	private static final String TAG_VOT_DATE = "vot_date";
+	private static final String TAG_LASTANSWERTS = "lastanswerts";
+	private static final String TAG_QLANG = "qlang";
+	private static final String TAG_QINTL = "qintl";
+	private static final String TAG_LANGUAGE = "language";
+	private static final String TAG_ID = "id";
+	private static final String TAG_BEST_ID = "best_id";
 
-		// Initializing the handler to access the tags in the XML file
-		XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(file));
+	public static <E> void main(String[] args)
+			throws FileNotFoundException, XMLStreamException, FactoryConfigurationError {
 
-		// All read documents objects will be added to this list
-		List<Document> documentList = new ArrayList<Document>();
+		// Creamos el flujo
+		XMLInputFactory xmlif = XMLInputFactory.newInstance();
 
-		// Create Document object. It will get all the data using setter methods.
-		// And at last, it will stored in above 'documentList'
-		Document document = null;
+		// Cuando se crea una instancia de XMLStreamReader el evento inicial y actual es
+		// el START_DOCUMENT
+		XMLStreamReader xmlsr = xmlif
+				.createXMLStreamReader(new FileReader("C:\\Users\\Sergio\\UCLM\\FullOct2007.xml\\FullOct2007.xml"));
+		ArrayList<String> nombres = new ArrayList<String>();
+		String tag = null;
+		String uri = null;
+		String subject = null;
+		String content = null;
+		String bestanswer = null;
+		List<String> nbestanswers = new ArrayList<String>();
+		String cat = null;
+		String maincat = null;
+		String subcat = null;
+		String date = null;
+		String res_date = null;
+		String vot_date = null;
+		String lastanswerts = null;
+		String qlang = null;
+		String qintl = null;
+		String language = null;
+		String id = null;
+		String best_id = null;
 
-		// Checking the availability of the next tag
-		while (eventReader.hasNext()) {
-			XMLEvent xmlEvent = eventReader.nextEvent();
+		int eventType;
 
-			if (xmlEvent.isStartElement()) {
-				StartElement startElement = xmlEvent.asStartElement();
+		System.out.println("Iniciando el documento");
 
-				// As soo as document tag is opened, create new Document object
-				if ("document".equalsIgnoreCase(startElement.getName().getLocalPart())) {
-					document = new Document();
-				}
+		// iteramos con el cursor a lo largo del documento
+		while (xmlsr.hasNext()) {
 
-				// Read all attributes when start tag is being read
-				@SuppressWarnings("unchecked")
-				Iterator<Attribute> iterator = startElement.getAttributes();
+			// obtenemos el tipo de evento
+			eventType = xmlsr.next();
 
-				while (iterator.hasNext()) {
-					Attribute attribute = iterator.next();
-					QName name = attribute.getName();
-					if ("uri".equalsIgnoreCase(name.getLocalPart())) {
-						document.setUri(attribute.getValue());
-					}
-					if ("subject".equalsIgnoreCase(name.getLocalPart())) {
-						document.setSubject(attribute.getValue());
-					}
-					if ("content".equalsIgnoreCase(name.getLocalPart())) {
-						document.setContent(attribute.getValue());
-					}
-					if ("bestanswer".equalsIgnoreCase(name.getLocalPart())) {
-						document.setBestanswer(attribute.getValue());
-					}
-					if ("nbestanswers".equalsIgnoreCase(name.getLocalPart())) {
-						List<String> bestAnswers = new ArrayList<String>();
-						if ("answer_item".equals(startElement.getName().getLocalPart())) {
-							bestAnswers.add(attribute.getValue());
-						}
-						document.getNbestanswers().addAll(bestAnswers);
-					}
-					if ("cat".equalsIgnoreCase(name.getLocalPart())) {
-						document.setCat(attribute.getValue());
-					}
-					if ("maincat".equalsIgnoreCase(name.getLocalPart())) {
-						document.setMaincat(attribute.getValue());
-					}
-					if ("subcat".equalsIgnoreCase(name.getLocalPart())) {
-						document.setSubcat(attribute.getValue());
-					}
-					if ("date".equalsIgnoreCase(name.getLocalPart())) {
-						document.setDate(attribute.getValue());
-					}
-					if ("res_date".equalsIgnoreCase(name.getLocalPart())) {
-						document.setRes_date(attribute.getValue());
-					}
-					if ("vot_date".equalsIgnoreCase(name.getLocalPart())) {
-						document.setVot_date(attribute.getValue());
-					}
-					if ("lastanswerts".equalsIgnoreCase(name.getLocalPart())) {
-						document.setLastanswerts(attribute.getValue());
-					}
-					if ("qlang".equalsIgnoreCase(name.getLocalPart())) {
-						document.setQlang(attribute.getValue());
-					}
-					if ("qintl".equalsIgnoreCase(name.getLocalPart())) {
-						document.setQintl(attribute.getValue());
-					}
-					if ("language".equalsIgnoreCase(name.getLocalPart())) {
-						document.setLanguage(attribute.getValue());
-					}
-					if ("id".equalsIgnoreCase(name.getLocalPart())) {
-						document.setId(attribute.getValue());
-					}
-					if ("best_id".equalsIgnoreCase(name.getLocalPart())) {
-						document.setBest_id(attribute.getValue());
-					}
+			// Al tener que manejar varios eventos el bloque switch resulta una solución
+			// elegante
+			// para ir añadiendo case de eventos
+			switch (eventType) {
+
+			case XMLEvent.START_ELEMENT:
+
+				// obtenemos la etiqueta
+				tag = xmlsr.getLocalName();
+
+				if (tag.equals(TAG_URI)) {
+					uri = xmlsr.getElementText();
 
 				}
-			}
+				if (tag.equals(TAG_SUBJECT)) {
+					subject = xmlsr.getElementText();
 
-			if (xmlEvent.isEndElement()) {
-				EndElement endElement = xmlEvent.asEndElement();
-
-				// If document tag is closed then add the document object to list;
-				// and be ready to read next document data
-				if ("document".equalsIgnoreCase(endElement.getName().getLocalPart())) {
-					documentList.add(document);
 				}
+				if (tag.equals(TAG_CONTENT)) {
+					content = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_BESTANSWER)) {
+					bestanswer = xmlsr.getElementText();
+
+				}
+//				if (tag.equals(TAG_NBESTANSWERS)) {
+//
+//				}
+				if (tag.equals(TAG_ANSWER_ITEM)) {
+					nbestanswers.add(xmlsr.getElementText());
+				}
+				if (tag.equals(TAG_CAT)) {
+					cat = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_MAINCAT)) {
+					maincat = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_SUBCAT)) {
+					subcat = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_DATE)) {
+					date = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_RES_DATE)) {
+					res_date = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_VOT_DATE)) {
+					vot_date = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_LASTANSWERTS)) {
+					lastanswerts = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_QLANG)) {
+					qlang = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_QINTL)) {
+					qintl = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_LANGUAGE)) {
+					language = xmlsr.getElementText();
+
+				}
+				if (tag.equals(TAG_ID)) {
+					id = xmlsr.getElementText();
+
+				}
+
+				else if (tag.equals(TAG_BEST_ID)) {
+					best_id = xmlsr.getElementText();
+				}
+
+				Document document = new Document(uri, subject, content, bestanswer, nbestanswers, cat, maincat, subcat,
+						date, res_date, vot_date, lastanswerts, qlang, qintl, language, id, best_id);
+
+				break;
+
+			case XMLEvent.END_DOCUMENT:
+				System.out.println("Fin del documento");
+				break;
+
 			}
 		}
 
-		System.out.println(documentList); // Verify read data
+		System.out.println("Empleados con salario mayor a 30000: " + nombres);
 
 	}
 }

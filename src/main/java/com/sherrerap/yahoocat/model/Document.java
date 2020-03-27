@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Document {
 	private String uri;
@@ -27,6 +26,29 @@ public class Document {
 	private String language;
 	private String id;
 	private String best_id;
+
+	public Document(String uri, String subject, String content, String bestanswer, List<String> nbestanswers,
+			String cat, String maincat, String subcat, String date, String res_date, String vot_date,
+			String lastanswerts, String qlang, String qintl, String language, String id, String best_id) {
+		super();
+		this.uri = uri;
+		this.subject = subject;
+		this.content = content;
+		this.bestanswer = bestanswer;
+		this.nbestanswers = nbestanswers;
+		this.cat = cat;
+		this.maincat = maincat;
+		this.subcat = subcat;
+		this.date = date;
+		this.res_date = res_date;
+		this.vot_date = vot_date;
+		this.lastanswerts = lastanswerts;
+		this.qlang = qlang;
+		this.qintl = qintl;
+		this.language = language;
+		this.id = id;
+		this.best_id = best_id;
+	}
 
 	public String getUri() {
 		return uri;
