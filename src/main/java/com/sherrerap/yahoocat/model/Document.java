@@ -50,6 +50,10 @@ public class Document {
 		this.best_id = best_id;
 	}
 
+	public Document() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getUri() {
 		return uri;
 	}

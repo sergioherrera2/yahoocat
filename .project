@@ -20,4 +20,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/resources/FullOct2007.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/FullOct2007.xml/FullOct2007.xml</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

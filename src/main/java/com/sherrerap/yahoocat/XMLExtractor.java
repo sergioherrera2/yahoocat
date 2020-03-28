@@ -1,174 +1,133 @@
 package com.sherrerap.yahoocat;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.XMLEvent;
 
 import com.sherrerap.yahoocat.model.Document;
 
 public class XMLExtractor {
+	public static void main(String[] args) throws FileNotFoundException, XMLStreamException {
+		// All read employees objects will be added to this list
+		List<Document> docList = new ArrayList<>();
 
-	private static final String TAG_DOCUMENT = "document";
-	private static final String TAG_URI = "uri";
-	private static final String TAG_SUBJECT = "subject";
-	private static final String TAG_CONTENT = "content";
-	private static final String TAG_BESTANSWER = "bestanswer";
-	private static final String TAG_NBESTANSWERS = "nbestanswers";
-	private static final String TAG_ANSWER_ITEM = "answer_item";
-	private static final String TAG_CAT = "cat";
-	private static final String TAG_MAINCAT = "maincat";
-	private static final String TAG_SUBCAT = "subcat";
-	private static final String TAG_DATE = "date";
-	private static final String TAG_RES_DATE = "res_date";
-	private static final String TAG_VOT_DATE = "vot_date";
-	private static final String TAG_LASTANSWERTS = "lastanswerts";
-	private static final String TAG_QLANG = "qlang";
-	private static final String TAG_QINTL = "qintl";
-	private static final String TAG_LANGUAGE = "language";
-	private static final String TAG_ID = "id";
-	private static final String TAG_BEST_ID = "best_id";
+		// Create Employee object. It will get all the data using setter methods.
+		// And at last, it will stored in above 'employeeList'
+		Document answer = null;
+		List<String> answer_items = new ArrayList<>();
 
-	public static <E> void main(String[] args)
-			throws FileNotFoundException, XMLStreamException, FactoryConfigurationError {
+		File file = new File("C:/Users/rubri/Desktop/FullOct2007.xml");
+		XMLInputFactory factory = XMLInputFactory.newInstance();
+		XMLStreamReader streamReader = factory.createXMLStreamReader(new FileReader(file));
 
-		// Creamos el flujo
-		XMLInputFactory xmlif = XMLInputFactory.newInstance();
+		int i = 0;
 
-		// Cuando se crea una instancia de XMLStreamReader el evento inicial y actual es
-		// el START_DOCUMENT
-		XMLStreamReader xmlsr = xmlif
-				.createXMLStreamReader(new FileReader("C:\\Users\\Sergio\\UCLM\\FullOct2007.xml\\FullOct2007.xml"));
-		ArrayList<String> nombres = new ArrayList<String>();
-		String tag = null;
-		String uri = null;
-		String subject = null;
-		String content = null;
-		String bestanswer = null;
-		List<String> nbestanswers = new ArrayList<String>();
-		String cat = null;
-		String maincat = null;
-		String subcat = null;
-		String date = null;
-		String res_date = null;
-		String vot_date = null;
-		String lastanswerts = null;
-		String qlang = null;
-		String qintl = null;
-		String language = null;
-		String id = null;
-		String best_id = null;
+		while (streamReader.hasNext() && i < 10) {
+			// Move to next event
+			streamReader.next();
 
-		int eventType;
+			// Check if its 'START_ELEMENT'
+			if (streamReader.getEventType() == XMLStreamReader.START_ELEMENT) {
+				// employee tag - opened
+				if (streamReader.getLocalName().equalsIgnoreCase("document")) {
 
-		System.out.println("Iniciando el documento");
+					// Create new employee object asap tag is open
+					answer = new Document();
 
-		// iteramos con el cursor a lo largo del documento
-		while (xmlsr.hasNext()) {
-
-			// obtenemos el tipo de evento
-			eventType = xmlsr.next();
-
-			// Al tener que manejar varios eventos el bloque switch resulta una solución
-			// elegante
-			// para ir añadiendo case de eventos
-			switch (eventType) {
-
-			case XMLEvent.START_ELEMENT:
-
-				// obtenemos la etiqueta
-				tag = xmlsr.getLocalName();
-
-				if (tag.equals(TAG_URI)) {
-					uri = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_SUBJECT)) {
-					subject = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_CONTENT)) {
-					content = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_BESTANSWER)) {
-					bestanswer = xmlsr.getElementText();
-
-				}
-//				if (tag.equals(TAG_NBESTANSWERS)) {
-//
-//				}
-				if (tag.equals(TAG_ANSWER_ITEM)) {
-					nbestanswers.add(xmlsr.getElementText());
-				}
-				if (tag.equals(TAG_CAT)) {
-					cat = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_MAINCAT)) {
-					maincat = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_SUBCAT)) {
-					subcat = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_DATE)) {
-					date = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_RES_DATE)) {
-					res_date = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_VOT_DATE)) {
-					vot_date = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_LASTANSWERTS)) {
-					lastanswerts = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_QLANG)) {
-					qlang = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_QINTL)) {
-					qintl = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_LANGUAGE)) {
-					language = xmlsr.getElementText();
-
-				}
-				if (tag.equals(TAG_ID)) {
-					id = xmlsr.getElementText();
+					i++;
 
 				}
 
-				else if (tag.equals(TAG_BEST_ID)) {
-					best_id = xmlsr.getElementText();
+				if (streamReader.getLocalName().equalsIgnoreCase("uri")) {
+					answer.setUri(streamReader.getElementText());
 				}
 
-				Document document = new Document(uri, subject, content, bestanswer, nbestanswers, cat, maincat, subcat,
-						date, res_date, vot_date, lastanswerts, qlang, qintl, language, id, best_id);
+				if (streamReader.getLocalName().equalsIgnoreCase("subject")) {
+					answer.setSubject(streamReader.getElementText());
+				}
 
-				break;
+				if (streamReader.getLocalName().equalsIgnoreCase("content")) {
+					answer.setContent(streamReader.getElementText());
+				}
 
-			case XMLEvent.END_DOCUMENT:
-				System.out.println("Fin del documento");
-				break;
+				if (streamReader.getLocalName().equalsIgnoreCase("bestanswer")) {
+					answer.setBestanswer(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("nbestanswers")) {
+					answer_items = new ArrayList<>();
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("answer_item")) {
+					answer_items.add(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("cat")) {
+					answer.setCat(streamReader.getElementText());
+					answer.setNbestanswers(answer_items);
+					answer_items = null;
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("maincat")) {
+					answer.setMaincat(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("subcat")) {
+					answer.setSubcat(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("date")) {
+					answer.setDate(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("res_date")) {
+					answer.setRes_date(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("vot_date")) {
+					answer.setVot_date(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("lastanswerts")) {
+					answer.setLastanswerts(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("qlang")) {
+					answer.setQlang(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("qintl")) {
+					answer.setQintl(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("language")) {
+					answer.setLanguage(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("id")) {
+					answer.setId(streamReader.getElementText());
+				}
+
+				if (streamReader.getLocalName().equalsIgnoreCase("best_id")) {
+					answer.setBest_id(streamReader.getElementText());
+				}
 
 			}
-		}
 
-		System.out.println("Empleados con salario mayor a 30000: " + nombres);
+			// If employee tag is closed then add the employee object to list
+			if (streamReader.getEventType() == XMLStreamReader.END_ELEMENT) {
+				if (streamReader.getLocalName().equalsIgnoreCase("document")) {
+					docList.add(answer);
+				}
+			}
+		}
+		// Verify read data
 
 	}
 }
