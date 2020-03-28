@@ -2,11 +2,12 @@ package com.sherrerap.yahoocat.model;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.NoArgsConstructor;
 
-@Data
+@XmlRootElement
 @NoArgsConstructor
 public class Document {
 	private String uri;
@@ -54,6 +55,7 @@ public class Document {
 		// TODO Auto-generated constructor stub
 	}
 
+	@XmlAttribute
 	public String getUri() {
 		return uri;
 	}
@@ -62,6 +64,7 @@ public class Document {
 		this.uri = uri;
 	}
 
+	@XmlAttribute
 	public String getSubject() {
 		return subject;
 	}
@@ -70,6 +73,7 @@ public class Document {
 		this.subject = subject;
 	}
 
+	@XmlAttribute
 	public String getContent() {
 		return content;
 	}
@@ -78,6 +82,7 @@ public class Document {
 		this.content = content;
 	}
 
+	@XmlAttribute
 	public String getBestanswer() {
 		return bestanswer;
 	}
@@ -86,6 +91,7 @@ public class Document {
 		this.bestanswer = bestanswer;
 	}
 
+	@XmlAttribute
 	public List<String> getNbestanswers() {
 		return nbestanswers;
 	}
@@ -94,6 +100,7 @@ public class Document {
 		this.nbestanswers = nbestanswers;
 	}
 
+	@XmlAttribute
 	public String getCat() {
 		return cat;
 	}
@@ -102,6 +109,7 @@ public class Document {
 		this.cat = cat;
 	}
 
+	@XmlAttribute
 	public String getMaincat() {
 		return maincat;
 	}
@@ -110,6 +118,7 @@ public class Document {
 		this.maincat = maincat;
 	}
 
+	@XmlAttribute
 	public String getSubcat() {
 		return subcat;
 	}
@@ -118,6 +127,7 @@ public class Document {
 		this.subcat = subcat;
 	}
 
+	@XmlAttribute
 	public String getDate() {
 		return date;
 	}
@@ -126,6 +136,7 @@ public class Document {
 		this.date = date;
 	}
 
+	@XmlAttribute
 	public String getRes_date() {
 		return res_date;
 	}
@@ -134,6 +145,7 @@ public class Document {
 		this.vot_date = vot_date;
 	}
 
+	@XmlAttribute
 	public String getVot_date() {
 		return vot_date;
 	}
@@ -142,6 +154,7 @@ public class Document {
 		this.res_date = res_date;
 	}
 
+	@XmlAttribute
 	public String getLastanswerts() {
 		return lastanswerts;
 	}
@@ -150,6 +163,7 @@ public class Document {
 		this.lastanswerts = lastanswerts;
 	}
 
+	@XmlAttribute
 	public String getQlang() {
 		return qlang;
 	}
@@ -158,6 +172,7 @@ public class Document {
 		this.qlang = qlang;
 	}
 
+	@XmlAttribute
 	public String getQintl() {
 		return qintl;
 	}
@@ -166,6 +181,7 @@ public class Document {
 		this.qintl = qintl;
 	}
 
+	@XmlAttribute
 	public String getLanguage() {
 		return language;
 	}
@@ -174,6 +190,7 @@ public class Document {
 		this.language = language;
 	}
 
+	@XmlAttribute
 	public String getId() {
 		return id;
 	}
@@ -182,6 +199,7 @@ public class Document {
 		this.id = id;
 	}
 
+	@XmlAttribute
 	public String getBest_id() {
 		return best_id;
 	}
